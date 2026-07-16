@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order a Title — Eagle Abstract Corp.</title>
+<meta name="description" content="Place a New York title order online with Eagle Abstract Corp. — purchase, refinance, attorney, and co-op searches. Confirmed by email, response by the next business day.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css">
+<style>
+.pagehead{padding:56px 0 28px}
+.pagehead h1{font-size:clamp(32px,4vw,44px);margin:14px 0 10px}
+.pagehead p{color:#4A4145;max-width:44em}
+
+/* stepper */
+.stepper{display:flex;gap:0;margin:34px 0 30px;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:#fff}
+.step{flex:1;padding:14px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-left:1px solid var(--line);display:flex;align-items:center;gap:10px}
+.step:first-child{border-left:none}
+.step .n{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font-size:11px;flex:none}
+.step.active{color:var(--crimson);background:#FBF2F5}
+.step.active .n{border-color:var(--crimson);background:var(--crimson);color:#fff}
+.step.done{color:var(--ink)}
+.step.done .n{border-color:var(--crimson);color:var(--crimson)}
+
+/* form */
+form.orderform{background:#fff;border:1px solid var(--line);border-radius:3px;padding:40px;margin-bottom:80px}
+fieldset{border:none;display:none}
+fieldset.current{display:block}
+legend{font-family:'Marcellus',serif;font-size:24px;margin-bottom:6px;padding:0}
+.hint{font-size:14px;color:var(--muted);margin-bottom:26px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:18px 22px;margin-bottom:18px}
+.frow.one{grid-template-columns:1fr}
+.frow.three{grid-template-columns:1fr 1fr 1fr}
+label.f{display:block;font-size:13.5px;font-weight:600}
+label.f .req{color:var(--crimson)}
+label.f span.lbl{display:block;margin-bottom:6px}
+input[type=text],input[type=email],input[type=tel],input[type=date],select,textarea{
+  width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:2px;
+  font:inherit;font-size:15px;background:var(--paper);color:var(--ink);
+}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--crimson);outline-offset:0;border-color:var(--crimson)}
+input.err,select.err{border-color:#C22B2B;background:#FDF4F4}
+.errmsg{color:#C22B2B;font-size:12.5px;font-weight:500;margin-top:5px;display:none}
+.errmsg.show{display:block}
+
+/* choice cards */
+.choices{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.choice{border:1px solid var(--line);border-radius:3px;padding:18px 16px;cursor:pointer;background:var(--paper)}
+.choice input{position:absolute;opacity:0}
+.choice .t{font-family:'Marcellus',serif;font-size:17px;display:block;margin-bottom:4px}
+.choice .d{font-size:12.5px;color:var(--muted);line-height:1.45}
+.choice:has(input:checked){border-color:var(--crimson);background:#FBF2F5;box-shadow:inset 0 0 0 1px var(--crimson)}
+.choice:has(input:focus-visible){outline:2px solid var(--crimson);outline-offset:2px}
+
+.checkgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px 20px;margin:8px 0 20px}
+.checkgrid label{font-size:14px;font-weight:400;display:flex;gap:9px;align-items:center}
+.checkgrid input{accent-color:var(--crimson);width:16px;height:16px}
+
+.subhead{font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--crimson);margin:28px 0 14px;padding-top:22px;border-top:1px solid var(--line)}
+.subhead:first-of-type{border-top:none;padding-top:0;margin-top:6px}
+.optional-note{font-weight:400;color:var(--muted);text-transform:none;letter-spacing:0}
+
+/* nav buttons */
+.formnav{display:flex;justify-content:space-between;margin-top:34px;padding-top:26px;border-top:1px solid var(--line)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+button.btn{cursor:pointer;font-family:inherit}
+
+/* review */
+.review{border:1px solid var(--line);border-radius:3px}
+.review .rgroup{padding:18px 22px;border-top:1px solid var(--line)}
+.review .rgroup:first-child{border-top:none}
+.review h3{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--crimson);margin-bottom:10px;font-weight:500;display:flex;justify-content:space-between}
+.review h3 a{font-family:'Public Sans',sans-serif;text-transform:none;letter-spacing:0;font-size:13px;color:var(--muted)}
+.review dl{display:grid;grid-template-columns:220px 1fr;gap:4px 18px;font-size:14.5px}
+.review dt{color:var(--muted)}
+.review dd{font-weight:500}
+
+/* success */
+.success{display:none;text-align:center;padding:70px 30px;background:#fff;border:1px solid var(--line);border-radius:3px;margin-bottom:80px}
+.success.show{display:block}
+.success .stampmini{display:inline-block;border:2px solid var(--stamp);border-radius:5px;color:var(--stamp);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;padding:10px 18px;transform:rotate(-3deg);margin-bottom:22px}
+.success h2{font-size:32px;margin-bottom:12px}
+.success p{color:#4A4145;max-width:36em;margin:0 auto 8px}
+.success .ref{font-family:'IBM Plex Mono',monospace;color:var(--crimson);font-weight:500}
+
+@media (max-width:900px){
+  .choices{grid-template-columns:1fr 1fr}
+  .frow,.frow.three{grid-template-columns:1fr}
+  .checkgrid{grid-template-columns:1fr 1fr}
+  form.orderform{padding:24px 18px}
+  .stepper{flex-wrap:wrap}
+  .step{min-width:50%;border-top:1px solid var(--line)}
+  .review dl{grid-template-columns:1fr}
+  .review dt{margin-top:8px}
+}
+</style>
+</head>
+<body>
+
+<div class="mocknote">MOCKUP — redesign concept for eagleabstract.com · not the live site</div>
+
+<div class="util">
+  <div class="wrap">
+    <div><a href="tel:+16315498848">631.549.8848</a> &nbsp;·&nbsp; <span class="hours">Fax 631.549.8976</span></div>
+    <div class="hours">Monday–Friday, 9 AM–5 PM · Serving all 62 New York counties</div>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="logo" href="/" aria-label="Eagle Abstract Corp. home">
+      <img src="/img/eagle-logo_horiz_101217_98-05-39.png" alt="Eagle Abstract Corp.">
+    </a>
+    <nav aria-label="Main">
+      <a href="/#services">Services</a>
+      <a href="/#about">About</a>
+      <a href="/forms.html">Resources</a>
+      <a href="https://eagleabstract.com/fees-services/">Recording Fees</a>
+      <a href="/#contact">Contact</a>
+      <a class="btn btn-primary order-btn" href="/order.html" aria-current="page">Order a Title</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Order</p>
+    <h1>Order a title.</h1>
+    <p>Four quick steps. Fields marked <span style="color:var(--crimson)">*</span> are required — everything else can wait. You'll get an email confirmation immediately, and we'll respond by the next business day. Prefer the phone? Call <a href="tel:+16315498848" style="color:var(--crimson);font-weight:600">631.549.8848</a>, Monday–Friday 9–5.</p>
+  </div>
+
+  <ol class="stepper" aria-label="Order progress">
+    <li class="step active" data-step="1"><span class="n">1</span> Transaction</li>
+    <li class="step" data-step="2"><span class="n">2</span> Property</li>
+    <li class="step" data-step="3"><span class="n">3</span> Parties</li>
+    <li class="step" data-step="4"><span class="n">4</span> Review</li>
+  </ol>
+
+  <form class="orderform" id="orderform" novalidate>
+
+    <!-- STEP 1 -->
+    <fieldset class="current" data-step="1">
+      <legend>What kind of search do you need?</legend>
+      <p class="hint">Pick the primary search. You can add supplemental searches below.</p>
+
+      <div class="choices" role="radiogroup" aria-label="Title search type">
+        <label class="choice"><input type="radio" name="search_type" value="Purchase" required>
+          <span class="t">Purchase</span><span class="d">Full title search &amp; insurance for a sale.</span></label>
+        <label class="choice"><input type="radio" name="search_type" value="Refinance">
+          <span class="t">Refinance</span><span class="d">Lender's policy for a new mortgage.</span></label>
+        <label class="choice"><input type="radio" name="search_type" value="Attorney Search">
+          <span class="t">Attorney search</span><span class="d">Search-only, no policy.</span></label>
+        <label class="choice"><input type="radio" name="search_type" value="CO-OP Search">
+          <span class="t">Co-op search</span><span class="d">Lien search for a cooperative apartment.</span></label>
+      </div>
+      <p class="errmsg" id="err-search_type">Choose a search type to continue.</p>
+
+      <div class="frow">
+        <label class="f" id="f-price"><span class="lbl">Purchase price <span class="req">*</span></span>
+          <input type="text" name="purchase_price" inputmode="numeric" placeholder="$">
+          <span class="errmsg">Enter the purchase price.</span></label>
+        <label class="f"><span class="lbl">Mortgage amount</span>
+          <input type="text" name="mortgage_amount" inputmode="numeric" placeholder="$"></label>
+        <label class="f"><span class="lbl">Anticipated closing date</span>
+          <input type="date" name="closing_date"></label>
+        <label class="f"><span class="lbl">Eagle sales person <span class="optional-note">(if any)</span></span>
+          <input type="text" name="salesperson"></label>
+      </div>
+
+      <p class="subhead">Supplemental searches <span class="optional-note">— optional</span></p>
+      <div class="checkgrid">
+        <label><input type="checkbox" name="supplemental" value="Foreclosure Search"> Foreclosure search</label>
+        <label><input type="checkbox" name="supplemental" value="Judgment & Lien Search"> Judgment &amp; lien search</label>
+        <label><input type="checkbox" name="supplemental" value="Last Owner Search"> Last owner search</label>
+        <label><input type="checkbox" name="supplemental" value="Open Mortgage Search"> Open mortgage search</label>
+      </div>
+    </fieldset>
+
+    <!-- STEP 2 -->
+    <fieldset data-step="2">
+      <legend>Tell us about the property.</legend>
+      <p class="hint">District / section / block / lot help us move faster, but the address alone is enough to start.</p>
+
+      <div class="frow">
+        <label class="f"><span class="lbl">Property type <span class="req">*</span></span>
+          <select name="property_type" required>
+            <option value="">Select…</option>
+            <option>Residential</option><option>Commercial</option><option>Other</option>
+          </select>
+          <span class="errmsg">Select a property type.</span></label>
+        <label class="f" id="f-coop" hidden><span class="lbl">Co-op name <span class="req">*</span></span>
+          <input type="text" name="coop_name">
+          <span class="errmsg">Enter the co-op name.</span></label>
+      </div>
+      <div class="frow one">
+        <label class="f"><span class="lbl">Property address <span class="req">*</span></span>
+          <input type="text" name="address" required placeholder="Street, city, ZIP">
+          <span class="errmsg">Enter the property address.</span></label>
+      </div>
+      <div class="frow">
+        <label class="f"><span class="lbl">County <span class="req">*</span></span>
+          <input type="text" name="county" list="counties" required>
+          <datalist id="counties">
+            <option>Suffolk</option><option>Nassau</option><option>Queens</option><option>Kings (Brooklyn)</option>
+            <option>New York (Manhattan)</option><option>Bronx</option><option>Richmond (Staten Island)</option>
+            <option>Westchester</option><option>Rockland</option><option>Putnam</option><option>Orange</option>
+            <option>Dutchess</option><option>Ulster</option><option>Albany</option><option>Erie</option><option>Monroe</option>
+          </datalist>
+          <span class="errmsg">Enter the county.</span></label>
+        <label class="f"><span class="lbl">City / Town <span class="req">*</span></span>
+          <input type="text" name="city" required>
+          <span class="errmsg">Enter the city or town.</span></label>
+      </div>
+      <div class="frow three" style="grid-template-columns:repeat(4,1fr)">
+        <label class="f"><span class="lbl">District</span><input type="text" name="district"></label>
+        <label class="f"><span class="lbl">Section</span><input type="text" name="section"></label>
+        <label class="f"><span class="lbl">Block</span><input type="text" name="block"></label>
+        <label class="f"><span class="lbl">Lot</span><input type="text" name="lot"></label>
+      </div>
+      <div class="frow">
+        <label class="f"><span class="lbl">Record owner / seller name(s)</span>
+          <input type="text" name="sellers"></label>
+        <label class="f" id="f-purchasers"><span class="lbl">Purchaser name(s)</span>
+          <input type="text" name="purchasers"></label>
+      </div>
+
+      <p class="subhead">Survey &amp; municipal <span class="optional-note">— optional</span></p>
+      <div class="frow">
+        <label class="f"><span class="lbl">Survey instructions</span>
+          <select name="survey">
+            <option value="">Select…</option>
+            <option>Need endorsement</option><option>Order new survey</option>
+            <option>Try to locate</option><option>Will send a copy</option>
+          </select></label>
+        <label class="f"><span class="lbl">Departmental instructions</span>
+          <select name="departmental">
+            <option value="">Select…</option>
+            <option>Standard search by county</option><option>Tax and bankruptcy only</option>
+          </select></label>
+      </div>
+      <div class="checkgrid">
+        <label><input type="checkbox" name="municipal" value="Certificate of Occupancy"> Certificate of occupancy</label>
+        <label><input type="checkbox" name="municipal" value="Housing & Building"> Housing &amp; building</label>
+        <label><input type="checkbox" name="municipal" value="Board of Health"> Board of health</label>
+        <label><input type="checkbox" name="municipal" value="Fire Department"> Fire department</label>
+        <label><input type="checkbox" name="municipal" value="Fuel Oil Permit"> Fuel oil permit</label>
+        <label><input type="checkbox" name="municipal" value="Sewer"> Sewer</label>
+        <label><input type="checkbox" name="municipal" value="Water/Sewer (NYC)"> Water / sewer (NYC)</label>
+        <label><input type="checkbox" name="municipal" value="Street Report"> Street report</label>
+        <label><input type="checkbox" name="municipal" value="Dept of Highways"> Dept. of highways</label>
+        <label><input type="checkbox" name="municipal" value="Emergency Repairs"> Emergency repairs</label>
+        <label><input type="checkbox" name="municipal" value="Bankruptcy Search"> Bankruptcy search</label>
+        <label><input type="checkbox" name="municipal" value="Patriot Search"> Patriot search</label>
+        <label><input type="checkbox" name="municipal" value="Air Resources"> Air resources</label>
+        <label><input type="checkbox" name="municipal" value="Green Homes Search"> Green homes search</label>
+      </div>
+    </fieldset>
+
+    <!-- STEP 3 -->
+    <fieldset data-step="3">
+      <legend>Who's on the file?</legend>
+      <p class="hint">Your details are required so we can confirm the order. Everyone else can be added later.</p>
+
+      <p class="subhead">You (ordering attorney / firm)</p>
+      <div class="frow">
+        <label class="f"><span class="lbl">Firm / company <span class="req">*</span></span>
+          <input type="text" name="client_firm" required>
+          <span class="errmsg">Enter your firm or company.</span></label>
+        <label class="f"><span class="lbl">Contact name <span class="req">*</span></span>
+          <input type="text" name="client_name" required>
+          <span class="errmsg">Enter a contact name.</span></label>
+        <label class="f"><span class="lbl">Email <span class="req">*</span></span>
+          <input type="email" name="client_email" required>
+          <span class="errmsg">Enter a valid email — your confirmation goes here.</span></label>
+        <label class="f"><span class="lbl">Phone <span class="req">*</span></span>
+          <input type="tel" name="client_phone" required>
+          <span class="errmsg">Enter a phone number.</span></label>
+      </div>
+      <div class="frow">
+        <label class="f"><span class="lbl">CC contact <span class="optional-note">(paralegal, etc.)</span></span>
+          <input type="text" name="client_cc_name"></label>
+        <label class="f"><span class="lbl">CC email</span>
+          <input type="email" name="client_cc_email"></label>
+      </div>
+
+      <div id="sellers-atty-block">
+        <p class="subhead">Seller's attorney <span class="optional-note">— optional</span></p>
+        <div class="frow">
+          <label class="f"><span class="lbl">Firm / company</span><input type="text" name="seller_firm"></label>
+          <label class="f"><span class="lbl">Contact name</span><input type="text" name="seller_name"></label>
+          <label class="f"><span class="lbl">Email</span><input type="email" name="seller_email"></label>
+          <label class="f"><span class="lbl">Phone</span><input type="tel" name="seller_phone"></label>
+        </div>
+      </div>
+
+      <div id="lender-block">
+        <p class="subhead">Lender <span class="optional-note">— optional</span></p>
+        <div class="frow">
+          <label class="f"><span class="lbl">Firm / company</span><input type="text" name="lender_firm"></label>
+          <label class="f"><span class="lbl">Contact name</span><input type="text" name="lender_name"></label>
+          <label class="f"><span class="lbl">Email</span><input type="email" name="lender_email"></label>
+          <label class="f"><span class="lbl">Phone</span><input type="tel" name="lender_phone"></label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- STEP 4 -->
+    <fieldset data-step="4">
+      <legend>Review your order.</legend>
+      <p class="hint">Check the details, add any notes, and submit. A copy goes to your email.</p>
+      <div class="review" id="review"></div>
+      <div class="frow one" style="margin-top:22px">
+        <label class="f"><span class="lbl">Notes for our team</span>
+          <textarea name="notes" rows="4" placeholder="Anything we should know about this file"></textarea></label>
+      </div>
+    </fieldset>
+
+    <div class="formnav">
+      <button type="button" class="btn btn-ghost" id="backbtn" disabled>Back</button>
+      <button type="button" class="btn btn-primary" id="nextbtn">Continue</button>
+    </div>
+  </form>
+
+  <div class="success" id="success">
+    <div class="stampmini">RECEIVED · EAGLE ABSTRACT CORP.</div>
+    <h2>Order received.</h2>
+    <p>Your reference number is <span class="ref" id="refno"></span>. A confirmation email is on its way, and we'll be in touch by the next business day.</p>
+    <p style="margin-top:18px"><a class="btn btn-ghost" href="/">Back to home</a></p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="legal" style="border-top:none;padding-top:0">
+      <span>© 2026 Eagle Abstract Corp. · Office 631.549.8848 · Fax 631.549.8976</span>
+      <span><a href="https://eagleabstract.com/privacy-policy/" style="color:#9C8F95">Privacy policy</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const form = document.getElementById('orderform');
+  const steps = [...form.querySelectorAll('fieldset')];
+  const tabs = [...document.querySelectorAll('.stepper .step')];
+  const back = document.getElementById('backbtn');
+  const next = document.getElementById('nextbtn');
+  let cur = 0;
+
+  function fmtMoney(el){
+    const d = el.value.replace(/[^0-9]/g,'');
+    el.value = d ? '$' + Number(d).toLocaleString('en-US') : '';
+  }
+  form.querySelectorAll('[name=purchase_price],[name=mortgage_amount]').forEach(el=>{
+    el.addEventListener('blur',()=>fmtMoney(el));
+  });
+
+  // conditional logic
+  function applyConditions(){
+    const t = (form.search_type && [...form.querySelectorAll('[name=search_type]')].find(r=>r.checked)||{}).value;
+    const priceLbl = document.querySelector('#f-price .lbl');
+    const priceInput = form.purchase_price;
+    if(t === 'Refinance'){ priceLbl.innerHTML = 'Purchase price <span class="optional-note">(n/a for refi)</span>'; priceInput.required = false; }
+    else { priceLbl.innerHTML = 'Purchase price <span class="req">*</span>'; priceInput.required = (t === 'Purchase'); }
+    document.getElementById('f-coop').hidden = (t !== 'CO-OP Search');
+    form.coop_name.required = (t === 'CO-OP Search');
+    document.getElementById('sellers-atty-block').style.display = (t === 'Refinance' || t === 'Attorney Search') ? 'none' : '';
+    document.getElementById('f-purchasers').style.display = (t === 'Refinance') ? 'none' : '';
+  }
+  form.querySelectorAll('[name=search_type]').forEach(r=>r.addEventListener('change',()=>{
+    document.getElementById('err-search_type').classList.remove('show');
+    applyConditions();
+  }));
+
+  function validateStep(i){
+    let ok = true;
+    const fs = steps[i];
+    if(i === 0 && ![...form.querySelectorAll('[name=search_type]')].some(r=>r.checked)){
+      document.getElementById('err-search_type').classList.add('show'); ok = false;
+    }
+    fs.querySelectorAll('input[required],select[required]').forEach(el=>{
+      if(el.closest('[hidden]')) return;
+      const bad = !el.value.trim() || (el.type==='email' && !/^\S+@\S+\.\S+$/.test(el.value));
+      el.classList.toggle('err', bad);
+      const msg = el.parentElement.querySelector('.errmsg');
+      if(msg) msg.classList.toggle('show', bad);
+      if(bad) ok = false;
+    });
+    return ok;
+  }
+
+  function buildReview(){
+    const fd = new FormData(form);
+    const g = k => fd.get(k) || '—';
+    const many = k => fd.getAll(k).join(', ') || '—';
+    const t = g('search_type');
+    const rows = [
+      ['Transaction', 1, [['Search type', t],['Supplemental', many('supplemental')],['Purchase price', g('purchase_price')],['Mortgage amount', g('mortgage_amount')],['Closing date', g('closing_date')]]],
+      ['Property', 2, [['Type', g('property_type')],['Address', g('address')],['County / town', g('county') + ' / ' + g('city')],['Dist / Sec / Blk / Lot', [g('district'),g('section'),g('block'),g('lot')].join(' / ')],['Sellers', g('sellers')],['Purchasers', g('purchasers')],['Survey', g('survey')],['Municipal', many('municipal')]]],
+      ['Parties', 3, [['You', g('client_name') + ', ' + g('client_firm')],['Email / phone', g('client_email') + ' · ' + g('client_phone')],["Seller's attorney", g('seller_name') === '—' ? '—' : g('seller_name') + ', ' + g('seller_firm')],['Lender', g('lender_name') === '—' ? '—' : g('lender_name') + ', ' + g('lender_firm')]]]
+    ];
+    document.getElementById('review').innerHTML = rows.map(([title, stepN, items]) =>
+      '<div class="rgroup"><h3>' + title + '<a href="#" data-goto="' + (stepN-1) + '">Edit</a></h3><dl>' +
+      items.map(([k,v])=>'<dt>'+k+'</dt><dd>'+String(v).replace(/</g,'&lt;')+'</dd>').join('') + '</dl></div>').join('');
+    document.querySelectorAll('[data-goto]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault(); go(+a.dataset.goto);}));
+  }
+
+  function go(i){
+    steps[cur].classList.remove('current');
+    cur = i;
+    steps[cur].classList.add('current');
+    tabs.forEach((t,j)=>{t.classList.toggle('active', j===cur); t.classList.toggle('done', j<cur);});
+    back.disabled = (cur === 0);
+    next.textContent = (cur === steps.length-1) ? 'Submit order' : 'Continue';
+    if(cur === 3) buildReview();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+
+  back.addEventListener('click', ()=> go(Math.max(0, cur-1)));
+  next.addEventListener('click', async ()=>{
+    if(!validateStep(cur)) return;
+    if(cur < steps.length-1){ go(cur+1); return; }
+    next.disabled = true; next.textContent = 'Submitting…';
+    const data = {};
+    new FormData(form).forEach((v,k)=>{ if(data[k]){ data[k] = [].concat(data[k], v); } else { data[k] = v; } });
+    try{
+      const r = await fetch('/api/order', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+      const j = await r.json();
+      if(!j.ok) throw new Error('bad response');
+      form.style.display = 'none';
+      document.querySelector('.stepper').style.display = 'none';
+      document.getElementById('refno').textContent = j.ref;
+      document.getElementById('success').classList.add('show');
+    }catch(e){
+      next.disabled = false; next.textContent = 'Submit order';
+      alert("We couldn't submit the order. Check your connection and try again, or call 631.549.8848.");
+    }
+  });
+
+  applyConditions();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forms Library — Affidavits, Deeds &amp; Contracts | Eagle Abstract Corp.</title>
+<meta name="description" content="Search 130+ free New York real estate forms from Eagle Abstract Corp. — affidavits, deeds, contracts of sale, mortgage documents, and more, as PDF or Word downloads.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css">
+<style>
+.pagehead{padding:56px 0 10px}
+.pagehead h1{font-size:clamp(32px,4vw,44px);margin:14px 0 10px}
+.pagehead p{color:#4A4145;max-width:46em}
+.disclaimer{font-size:12.5px;color:var(--muted);border-left:2px solid var(--line);padding-left:14px;max-width:56em;margin:18px 0 0}
+
+.toolbar{display:flex;gap:14px;align-items:center;margin:30px 0 8px;flex-wrap:wrap;position:sticky;top:85px;background:var(--paper);padding:14px 0;z-index:10;border-bottom:1px solid var(--line)}
+.searchbox{flex:1;min-width:240px;position:relative}
+.searchbox input{width:100%;padding:12px 14px 12px 40px;border:1px solid var(--line);border-radius:2px;font:inherit;font-size:15px;background:#fff}
+.searchbox input:focus{outline:2px solid var(--crimson);border-color:var(--crimson)}
+.searchbox svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--muted)}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:#fff;border-radius:99px;padding:8px 16px;font-size:13.5px;font-weight:500;cursor:pointer;font-family:inherit;color:var(--ink)}
+.chip[aria-pressed=true]{background:var(--crimson);border-color:var(--crimson);color:#fff}
+.count{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted);letter-spacing:.06em;margin:14px 0 6px}
+
+.formlist{list-style:none;margin-bottom:90px}
+.formlist li{border-bottom:1px solid var(--line)}
+.formlist a{display:flex;align-items:center;gap:16px;padding:15px 6px;text-decoration:none}
+.formlist a:hover{background:#FBF2F5}
+.badge{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;border:1px solid var(--line);border-radius:2px;padding:3px 7px;color:var(--muted);flex:none;width:44px;text-align:center}
+.badge.pdf{color:var(--crimson);border-color:#E3B7C4}
+.formlist .fname{flex:1;font-size:15px;font-weight:500}
+.formlist .fcat{font-size:12.5px;color:var(--muted);flex:none}
+.formlist .dl{color:var(--crimson);font-weight:600;font-size:13.5px;flex:none}
+.empty{padding:60px 20px;text-align:center;color:var(--muted);display:none}
+.empty.show{display:block}
+@media (max-width:700px){
+  .formlist .fcat{display:none}
+  .toolbar{position:static}
+}
+</style>
+</head>
+<body>
+
+<div class="mocknote">MOCKUP — redesign concept for eagleabstract.com · not the live site</div>
+
+<div class="util">
+  <div class="wrap">
+    <div><a href="tel:+16315498848">631.549.8848</a> &nbsp;·&nbsp; <span class="hours">Fax 631.549.8976</span></div>
+    <div class="hours">Monday–Friday, 9 AM–5 PM · Serving all 62 New York counties</div>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="logo" href="/" aria-label="Eagle Abstract Corp. home">
+      <img src="/img/eagle-logo_horiz_101217_98-05-39.png" alt="Eagle Abstract Corp.">
+    </a>
+    <nav aria-label="Main">
+      <a href="/#services">Services</a>
+      <a href="/#about">About</a>
+      <a href="/forms.html" aria-current="page">Resources</a>
+      <a href="https://eagleabstract.com/fees-services/">Recording Fees</a>
+      <a href="/#contact">Contact</a>
+      <a class="btn btn-primary order-btn" href="/order.html">Order a Title</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Resources</p>
+    <h1>Forms library.</h1>
+    <p>Over 130 New York real-estate forms — affidavits, deeds, contracts of sale, and mortgage documents — free to download as PDF or Word. Can't find what you need? Email <a href="mailto:customerservice@eagleabstract.com" style="color:var(--crimson);font-weight:600">customerservice@eagleabstract.com</a> or call 631.549.8848.</p>
+    <p class="disclaimer">These forms are furnished for informational purposes only, as a courtesy. No representation or warranty is made as to legal sufficiency, accuracy, or fitness for use. Sample forms should be reviewed — and modified as needed — with legal counsel before use.</p>
+  </div>
+
+  <div class="toolbar">
+    <div class="searchbox">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input type="search" id="q" placeholder="Search forms — try &quot;CEMA&quot;, &quot;LLC&quot;, &quot;quitclaim&quot;, &quot;marital&quot;…" aria-label="Search forms">
+    </div>
+    <div class="filters" role="group" aria-label="Filter by category">
+      <button class="chip" aria-pressed="true" data-cat="All">All</button>
+      <button class="chip" aria-pressed="false" data-cat="Affidavits">Affidavits</button>
+      <button class="chip" aria-pressed="false" data-cat="Contracts">Contracts</button>
+      <button class="chip" aria-pressed="false" data-cat="Deeds">Deeds</button>
+      <button class="chip" aria-pressed="false" data-cat="Mortgages">Mortgages</button>
+      <button class="chip" aria-pressed="false" data-cat="Miscellaneous">Misc.</button>
+    </div>
+  </div>
+  <p class="count" id="count"></p>
+  <ul class="formlist" id="list"></ul>
+  <div class="empty" id="empty">
+    <p>No forms match that search. Try a shorter term — or contact us and we'll track it down: <a href="mailto:customerservice@eagleabstract.com" style="color:var(--crimson)">customerservice@eagleabstract.com</a>.</p>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="legal" style="border-top:none;padding-top:0">
+      <span>© 2026 Eagle Abstract Corp. · Office 631.549.8848 · Fax 631.549.8976</span>
+      <span><a href="https://eagleabstract.com/privacy-policy/" style="color:#9C8F95">Privacy policy</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(async function(){
+  const forms = await (await fetch('/forms.json')).json();
+  const list = document.getElementById('list');
+  const q = document.getElementById('q');
+  const count = document.getElementById('count');
+  const empty = document.getElementById('empty');
+  let cat = 'All';
+
+  // synonyms so attorney shorthand finds the right documents
+  const syn = {
+    'cema':'consolidation extension modification',
+    'poa':'power of attorney',
+    'co-op':'cooperative', 'coop':'cooperative',
+    'hetpa':'home equity theft prevention 265',
+    '265':'hetpa', 'satisfaction':'sat', 'quit claim':'quitclaim'
+  };
+
+  function render(){
+    const term = q.value.trim().toLowerCase();
+    const expanded = syn[term] ? term + ' ' + syn[term] : term;
+    const words = expanded.split(/\s+/).filter(Boolean);
+    const hits = forms.filter(f =>
+      (cat === 'All' || f.category === cat) &&
+      (!words.length || words.some(w => f.name.toLowerCase().includes(w)))
+    );
+    list.innerHTML = hits.map(f =>
+      '<li><a href="' + f.url + '" target="_blank" rel="noopener">' +
+      '<span class="badge ' + f.type.toLowerCase() + '">' + f.type + '</span>' +
+      '<span class="fname">' + f.name + '</span>' +
+      '<span class="fcat">' + f.category + '</span>' +
+      '<span class="dl">Download ↓</span></a></li>').join('');
+    count.textContent = hits.length + ' OF ' + forms.length + ' FORMS';
+    empty.classList.toggle('show', hits.length === 0);
+  }
+
+  q.addEventListener('input', render);
+  document.querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    document.querySelectorAll('.chip').forEach(x => x.setAttribute('aria-pressed', 'false'));
+    c.setAttribute('aria-pressed', 'true');
+    cat = c.dataset.cat;
+    render();
+  }));
+  render();
+})();
+</script>
+</body>
+</html>
