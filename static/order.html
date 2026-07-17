@@ -15,6 +15,22 @@
 .pagehead h1{font-size:clamp(32px,4vw,44px);margin:14px 0 10px}
 .pagehead p{color:#4A4145;max-width:44em}
 
+/* upload-to-prefill */
+.prefill{display:none;border:1px dashed var(--stamp);border-radius:3px;background:#FDF7F9;padding:22px 24px;margin:30px 0 0;}
+.prefill.enabled{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.prefill .ic{flex:none;width:44px;height:44px;border:1.5px solid var(--stamp);border-radius:3px;display:flex;align-items:center;justify-content:center;color:var(--stamp);transform:rotate(-3deg);background:#fff}
+.prefill .tx{flex:1;min-width:240px}
+.prefill h3{font-family:'Marcellus',serif;font-weight:400;font-size:18px;margin-bottom:3px}
+.prefill p{font-size:13.5px;color:#4A4145}
+.prefill .btn{flex:none}
+.prefill input[type=file]{display:none}
+.prefill.busy{opacity:.7;pointer-events:none}
+.prefill.drag{background:#F8E9EF;border-style:solid}
+.prefillnote{display:none;background:#F3FAF4;border:1px solid #BBDDC0;border-radius:3px;padding:14px 18px;margin-top:14px;font-size:14px}
+.prefillnote.show{display:block}
+.prefillnote.warn{background:#FDF6EC;border-color:#E8CFA5}
+.prefillnote b{color:var(--crimson)}
+
 /* stepper */
 .stepper{display:flex;gap:0;margin:34px 0 30px;border:1px solid var(--line);border-radius:3px;overflow:hidden;background:#fff}
 .step{flex:1;padding:14px 16px;font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);border-left:1px solid var(--line);display:flex;align-items:center;gap:10px}
@@ -132,6 +148,19 @@ button.btn{cursor:pointer;font-family:inherit}
     <h1>Order a title.</h1>
     <p>Four quick steps. Fields marked <span style="color:var(--crimson)">*</span> are required — everything else can wait. You'll get an email confirmation immediately, and we'll respond by the next business day. Prefer the phone? Call <a href="tel:+16315498848" style="color:var(--crimson);font-weight:600">631.549.8848</a>, Monday–Friday 9–5.</p>
   </div>
+
+  <div class="prefill" id="prefill">
+    <div class="ic" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0 4 4m-4-4-4 4"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg>
+    </div>
+    <div class="tx">
+      <h3>Skip the typing — upload the contract.</h3>
+      <p>Drop in a contract of sale, prior title report, or deed (PDF or photo, up to 10 MB). We'll read it and pre-fill the order for your review.</p>
+    </div>
+    <label class="btn btn-ghost" for="prefill-file">Upload a document</label>
+    <input type="file" id="prefill-file" accept="application/pdf,image/png,image/jpeg,image/webp">
+  </div>
+  <div class="prefillnote" id="prefillnote" role="status"></div>
 
   <ol class="stepper" aria-label="Order progress">
     <li class="step active" data-step="1"><span class="n">1</span> Transaction</li>
@@ -444,6 +473,73 @@ button.btn{cursor:pointer;font-family:inherit}
   });
 
   applyConditions();
+
+  // ---- upload-to-prefill ----
+  const pf = document.getElementById('prefill');
+  const pfile = document.getElementById('prefill-file');
+  const pnote = document.getElementById('prefillnote');
+  const FIELD_LABELS = {search_type:'search type', purchase_price:'purchase price', mortgage_amount:'mortgage amount',
+    closing_date:'closing date', property_type:'property type', coop_name:'co-op name', address:'address',
+    county:'county', city:'city/town', district:'district', section:'section', block:'block', lot:'lot',
+    sellers:'sellers', purchasers:'purchasers', seller_firm:"seller's attorney firm", seller_name:"seller's attorney",
+    seller_email:"seller's attorney email", seller_phone:"seller's attorney phone",
+    lender_firm:'lender', lender_name:'lender contact', lender_email:'lender email', lender_phone:'lender phone'};
+
+  fetch('/api/extract/status').then(r=>r.json()).then(j=>{ if(j.enabled) pf.classList.add('enabled'); }).catch(()=>{});
+
+  function note(msg, warn){
+    pnote.innerHTML = msg;
+    pnote.classList.add('show');
+    pnote.classList.toggle('warn', !!warn);
+  }
+
+  function applyFields(fields){
+    const applied = [];
+    for(const [k,v] of Object.entries(fields)){
+      if(k === 'notes') continue;
+      if(k === 'search_type'){
+        const r = form.querySelector('[name=search_type][value="'+v+'"]');
+        if(r){ r.checked = true; applied.push(FIELD_LABELS[k]); }
+        continue;
+      }
+      const el = form.elements[k];
+      if(el && 'value' in el && !(el instanceof RadioNodeList && !el.value !== undefined && false)){
+        try{ el.value = v; applied.push(FIELD_LABELS[k] || k); }catch(e){}
+      }
+    }
+    applyConditions();
+    return applied;
+  }
+
+  async function upload(file){
+    if(!file) return;
+    pf.classList.add('busy');
+    note('Reading <b>' + file.name.replace(/[<>&]/g,'') + '</b>… this takes a few seconds.');
+    const fd = new FormData(); fd.append('file', file);
+    try{
+      const r = await fetch('/api/extract', {method:'POST', body: fd});
+      const j = await r.json();
+      if(!j.ok) throw new Error(j.error || 'Extraction failed.');
+      const applied = applyFields(j.fields);
+      if(!applied.length){ note('We read the document but couldn\'t find order details in it. Please fill the form manually.', true); }
+      else{
+        let msg = '<b>Pre-filled ' + applied.length + ' field' + (applied.length>1?'s':'') + ':</b> ' + applied.join(', ') +
+                  '. <b>Please review every step before submitting</b> — extraction can make mistakes.';
+        if(j.fields.notes) msg += '<br><b>Worth checking:</b> ' + String(j.fields.notes).replace(/[<>&]/g,'');
+        note(msg);
+      }
+    }catch(e){
+      note(String(e.message || 'Upload failed.').replace(/[<>&]/g,'') + ' You can still fill the form manually.', true);
+    }finally{
+      pf.classList.remove('busy');
+      pfile.value = '';
+    }
+  }
+
+  pfile.addEventListener('change', ()=> upload(pfile.files[0]));
+  ;['dragover','dragenter'].forEach(ev=> pf.addEventListener(ev, e=>{ e.preventDefault(); pf.classList.add('drag'); }));
+  ;['dragleave','drop'].forEach(ev=> pf.addEventListener(ev, e=>{ e.preventDefault(); pf.classList.remove('drag'); }));
+  pf.addEventListener('drop', e=> upload(e.dataTransfer.files[0]));
 })();
 </script>
 <script src="/js/nav.js"></script>
