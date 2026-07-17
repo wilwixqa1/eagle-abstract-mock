@@ -46,4 +46,13 @@ def order():
 def forms():
     return FileResponse(STATIC / "forms.html")
 
+
+@app.get("/about")
+def about():
+    return FileResponse(STATIC / "about.html")
+
+@app.get("/fees")
+def fees():
+    return FileResponse(STATIC / "fees.html")
+
 app.mount("/", StaticFiles(directory=STATIC, html=True), name="static")
