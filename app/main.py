@@ -110,6 +110,11 @@ def admin_submissions(x_admin_password: str = Header(default="")):
     return JSONResponse({"ok": True, "count": len(subs), "submissions": subs})
 
 
+@app.get("/admin")
+def admin():
+    return FileResponse(STATIC / "admin.html")
+
+
 @app.get("/")
 def index():
     return FileResponse(STATIC / "index.html")

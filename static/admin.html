@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin — Submissions | Eagle Abstract Corp.</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css">
+<style>
+.pagehead{padding:50px 0 20px}
+.pagehead h1{font-size:clamp(30px,4vw,40px);margin:12px 0 8px}
+.pagehead p{color:#4A4145}
+
+.gate{max-width:420px;background:#fff;border:1px solid var(--line);border-radius:3px;padding:34px;margin:20px 0 90px}
+.gate label{display:block;font-size:13.5px;font-weight:600;margin-bottom:6px}
+.gate input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:2px;font:inherit;font-size:15px;margin-bottom:16px}
+.gate input:focus{outline:2px solid var(--crimson);border-color:var(--crimson)}
+.gate .bad{color:#C22B2B;font-size:13px;margin:-8px 0 14px;display:none}
+.gate .bad.show{display:block}
+button.btn{cursor:pointer;font-family:inherit}
+
+.dash{display:none;margin-bottom:90px}
+.dash.show{display:block}
+.dashbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:8px 0 20px;flex-wrap:wrap}
+.dashbar .stats{font-family:'IBM Plex Mono',monospace;font-size:12.5px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase}
+.dashbar .stats b{color:var(--crimson);font-weight:500}
+.dashbar .actions{display:flex;gap:10px}
+.btn.small{padding:9px 16px;font-size:13.5px}
+
+.sub{border:1px solid var(--line);border-radius:3px;background:#fff;margin-bottom:12px;overflow:hidden}
+.sub summary{list-style:none;display:flex;align-items:center;gap:16px;padding:15px 20px;cursor:pointer}
+.sub summary::-webkit-details-marker{display:none}
+.sub summary:hover{background:#FBF2F5}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.1em;border-radius:2px;padding:4px 8px;flex:none}
+.tag.order{background:var(--crimson);color:#fff}
+.tag.msg{background:var(--stone);color:var(--ink);border:1px solid var(--line)}
+.sub .ref{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--crimson)}
+.sub .who{flex:1;font-size:14.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sub .when{font-size:12.5px;color:var(--muted);flex:none}
+.sub .detail{border-top:1px solid var(--line);padding:16px 20px;background:var(--paper)}
+.sub dl{display:grid;grid-template-columns:220px 1fr;gap:5px 18px;font-size:13.5px}
+.sub dt{color:var(--muted)}
+.sub dd{font-weight:500;word-break:break-word}
+.emptystate{border:1px dashed var(--line);border-radius:3px;padding:50px 20px;text-align:center;color:var(--muted)}
+@media (max-width:700px){.sub dl{grid-template-columns:1fr}.sub .when{display:none}}
+</style>
+</head>
+<body>
+
+<div class="mocknote">MOCKUP — internal admin view · not linked from the public site</div>
+
+<div class="util">
+  <div class="wrap">
+    <div><a href="/">← Back to site</a></div>
+    <div class="hours">Eagle Abstract — submissions</div>
+  </div>
+</div>
+
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Admin</p>
+    <h1>Incoming submissions.</h1>
+    <p>Title orders and contact messages, newest first.</p>
+  </div>
+
+  <div class="gate" id="gate">
+    <label for="pw">Admin password</label>
+    <input type="password" id="pw" autocomplete="current-password">
+    <p class="bad" id="bad">That password wasn't accepted.</p>
+    <button class="btn btn-primary" id="login">View submissions</button>
+  </div>
+
+  <div class="dash" id="dash">
+    <div class="dashbar">
+      <div class="stats" id="stats"></div>
+      <div class="actions">
+        <button class="btn btn-ghost small" id="refresh">Refresh</button>
+        <button class="btn btn-ghost small" id="logout">Lock</button>
+      </div>
+    </div>
+    <div id="list"></div>
+  </div>
+</main>
+
+<script>
+(function(){
+  const gate = document.getElementById('gate');
+  const dash = document.getElementById('dash');
+  const bad = document.getElementById('bad');
+  const pw = document.getElementById('pw');
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+  function who(s){
+    const d = s.data || {};
+    if(s.ref.startsWith('EA')){
+      const bits = [d.search_type, d.address, d.client_name || d.client_firm].filter(Boolean);
+      return bits.join(' — ') || 'Title order';
+    }
+    return [d.name, d.company, (d.message||'').slice(0,60)].filter(Boolean).join(' — ') || 'Message';
+  }
+
+  function render(payload){
+    const list = document.getElementById('list');
+    document.getElementById('stats').innerHTML =
+      '<b>' + payload.count + '</b> total · <b>' +
+      payload.submissions.filter(s=>s.ref.startsWith('EA')).length + '</b> orders · <b>' +
+      payload.submissions.filter(s=>s.ref.startsWith('MSG')).length + '</b> messages';
+    if(!payload.count){
+      list.innerHTML = '<div class="emptystate">Nothing yet. Submissions from the order form and contact form will appear here.</div>';
+      return;
+    }
+    list.innerHTML = payload.submissions.map(s=>{
+      const isOrder = s.ref.startsWith('EA');
+      const when = s.received_at ? new Date(s.received_at).toLocaleString('en-US',{timeZone:'America/New_York'}) + ' ET' : '';
+      const rows = Object.entries(s.data||{}).filter(([k,v])=>v && String(v).trim())
+        .map(([k,v])=>'<dt>'+esc(k.replace(/_/g,' '))+'</dt><dd>'+esc(Array.isArray(v)?v.join(', '):v)+'</dd>').join('');
+      return '<details class="sub"><summary>' +
+        '<span class="tag '+(isOrder?'order':'msg')+'">'+(isOrder?'ORDER':'MESSAGE')+'</span>' +
+        '<span class="ref">'+esc(s.ref)+'</span>' +
+        '<span class="who">'+esc(who(s))+'</span>' +
+        '<span class="when">'+esc(when)+'</span>' +
+        '</summary><div class="detail"><dl>'+rows+'</dl></div></details>';
+    }).join('');
+  }
+
+  async function load(){
+    const key = sessionStorage.getItem('ea_admin') || pw.value;
+    try{
+      const r = await fetch('/api/admin/submissions', {headers:{'X-Admin-Password': key}});
+      if(r.status === 401){ throw 401; }
+      const j = await r.json();
+      sessionStorage.setItem('ea_admin', key);
+      gate.style.display = 'none';
+      dash.classList.add('show');
+      bad.classList.remove('show');
+      render(j);
+    }catch(e){
+      sessionStorage.removeItem('ea_admin');
+      gate.style.display = '';
+      dash.classList.remove('show');
+      if(pw.value) bad.classList.add('show');
+    }
+  }
+
+  document.getElementById('login').addEventListener('click', load);
+  pw.addEventListener('keydown', e=>{ if(e.key==='Enter') load(); });
+  document.getElementById('refresh').addEventListener('click', load);
+  document.getElementById('logout').addEventListener('click', ()=>{
+    sessionStorage.removeItem('ea_admin'); pw.value='';
+    dash.classList.remove('show'); gate.style.display='';
+  });
+  if(sessionStorage.getItem('ea_admin')) load();
+})();
+</script>
+</body>
+</html>
