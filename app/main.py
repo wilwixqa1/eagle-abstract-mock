@@ -13,8 +13,10 @@ from fastapi.staticfiles import StaticFiles
 
 BASE = Path(__file__).resolve().parent.parent
 STATIC = BASE / "static"
-ORDERS = BASE / "orders"          # mock persistence (ephemeral on Railway); prod = email relay
-ORDERS.mkdir(exist_ok=True)
+# Set ORDERS_DIR to a Railway volume mount (e.g. /data) for persistence across deploys.
+# Falls back to a local (ephemeral) directory when no volume is attached.
+ORDERS = Path(os.environ.get("ORDERS_DIR", str(BASE / "orders")))
+ORDERS.mkdir(parents=True, exist_ok=True)
 
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "eagle2026")
 _last_hits = defaultdict(list)    # naive per-IP rate limit
