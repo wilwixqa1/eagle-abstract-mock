@@ -170,3 +170,19 @@ footer .legal{border-top:1px solid #3A3136;padding-top:22px;font-size:12.5px;col
   .grid4{grid-template-columns:1fr}
   .util .hours{display:none}
 }
+
+/* mobile nav */
+.navtoggle{display:none;background:none;border:1px solid var(--line);border-radius:2px;padding:9px 11px;cursor:pointer}
+.navtoggle span{display:block;width:20px;height:2px;background:var(--ink);margin:4px 0;transition:transform .2s,opacity .2s}
+@media (max-width:960px){
+  .navtoggle{display:block}
+  .nav nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--paper);border-bottom:1px solid var(--line);flex-direction:column;align-items:stretch;padding:10px 28px 22px;gap:0;box-shadow:0 12px 24px rgba(36,27,31,.08)}
+  .nav nav.open{display:flex}
+  .nav nav a{padding:13px 0;border-bottom:1px solid var(--line);font-size:16px}
+  .nav nav a.order-btn{border-bottom:none;text-align:center;margin-top:14px}
+  header.site{position:sticky}
+  .nav{position:relative}
+}
+.navtoggle[aria-expanded=true] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.navtoggle[aria-expanded=true] span:nth-child(2){opacity:0}
+.navtoggle[aria-expanded=true] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}

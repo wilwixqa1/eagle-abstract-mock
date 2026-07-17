@@ -34,6 +34,24 @@ async def submit_order(req: Request):
     # PROD TODO: email intake copy to Eagle + confirmation to client_email
     return JSONResponse({"ok": True, "ref": ref})
 
+@app.post("/api/contact")
+async def submit_contact(req: Request):
+    try:
+        data = await req.json()
+    except Exception:
+        return JSONResponse({"ok": False, "error": "invalid payload"}, status_code=400)
+    ref = "MSG-{}-{}".format(
+        datetime.now(timezone.utc).strftime("%y%m%d"),
+        "".join(random.choices(string.digits, k=4)),
+    )
+    (ORDERS / f"{ref}.json").write_text(json.dumps({"ref": ref, "message": data}, indent=2))
+    # PROD TODO: relay to customerservice@ inbox
+    return JSONResponse({"ok": True, "ref": ref})
+
+@app.get("/contact")
+def contact():
+    return FileResponse(STATIC / "contact.html")
+
 @app.get("/")
 def index():
     return FileResponse(STATIC / "index.html")

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Eagle Abstract — Long Island Title Company | Eagle Abstract Corp.</title>
+<meta name="description" content="Contact Eagle Abstract Corp., Long Island's family-run title agency since 1979. Call 631-549-8848, Monday–Friday 9–5, or send us a message online.">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/site.css">
+<style>
+.pagehead{padding:56px 0 24px}
+.pagehead h1{font-size:clamp(32px,4vw,44px);margin:14px 0 10px}
+.pagehead p{color:#4A4145;max-width:44em}
+
+.contactgrid{display:grid;grid-template-columns:1fr .8fr;gap:50px;padding:10px 0 80px;align-items:start}
+form.contact{background:#fff;border:1px solid var(--line);border-radius:3px;padding:34px}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;margin-bottom:16px}
+.frow.one{grid-template-columns:1fr}
+label.f{display:block;font-size:13.5px;font-weight:600}
+label.f .req{color:var(--crimson)}
+label.f span.lbl{display:block;margin-bottom:6px}
+input[type=text],input[type=email],input[type=tel],textarea{
+  width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:2px;
+  font:inherit;font-size:15px;background:var(--paper);color:var(--ink);
+}
+input:focus,textarea:focus{outline:2px solid var(--crimson);outline-offset:0;border-color:var(--crimson)}
+input.err{border-color:#C22B2B;background:#FDF4F4}
+.errmsg{color:#C22B2B;font-size:12.5px;font-weight:500;margin-top:5px;display:none}
+.errmsg.show{display:block}
+.newsopt{display:flex;gap:10px;align-items:flex-start;font-size:14px;font-weight:400;margin:6px 0 22px}
+.newsopt input{accent-color:var(--crimson);width:16px;height:16px;margin-top:3px}
+button.btn{cursor:pointer;font-family:inherit}
+
+.infocard{border:1px solid var(--line);border-radius:3px;background:#fff;overflow:hidden}
+.infocard .band{background:var(--crimson);padding:22px 26px}
+.infocard .band img{height:44px}
+.infocard .rows{padding:6px 26px 10px}
+.inforow{padding:18px 0;border-top:1px solid var(--line)}
+.inforow:first-child{border-top:none}
+.inforow .k{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
+.inforow .v{font-size:16px;font-weight:500}
+.inforow .v a{color:var(--crimson);text-decoration:none}
+.inforow .v a:hover{text-decoration:underline}
+.inforow .sub{font-size:13px;color:var(--muted);margin-top:3px}
+
+.sent{display:none;text-align:center;padding:60px 26px}
+.sent.show{display:block}
+.sent h2{font-size:28px;margin-bottom:10px}
+.sent p{color:#4A4145}
+
+@media (max-width:900px){
+  .contactgrid{grid-template-columns:1fr}
+  .frow{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<div class="mocknote">MOCKUP — redesign concept for eagleabstract.com · not the live site</div>
+
+<div class="util">
+  <div class="wrap">
+    <div><a href="tel:+16315498848">631.549.8848</a> &nbsp;·&nbsp; <span class="hours">Fax 631.549.8976</span></div>
+    <div class="hours">Monday–Friday, 9 AM–5 PM · Serving all 62 New York counties</div>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap nav">
+    <a class="logo" href="/" aria-label="Eagle Abstract Corp. home">
+      <img src="/img/eagle-logo_horiz_101217_98-05-39.png" alt="Eagle Abstract Corp.">
+    </a>
+    <button class="navtoggle" aria-expanded="false" aria-label="Menu" aria-controls="mainnav"><span></span><span></span><span></span></button>
+    <nav id="mainnav" aria-label="Main">
+      <a href="/#services">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/forms.html">Resources</a>
+      <a href="/fees.html">Recording Fees</a>
+      <a href="/contact.html" aria-current="page">Contact</a>
+      <a class="btn btn-primary order-btn" href="/order.html">Order a Title</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="pagehead">
+    <p class="eyebrow">Contact</p>
+    <h1>We look forward to hearing from you.</h1>
+    <p>Questions about a file, a rate, or a search we haven't listed — send a message or call the office. A person answers, Monday through Friday, 9 to 5.</p>
+  </div>
+
+  <div class="contactgrid">
+    <div>
+      <form class="contact" id="contactform" novalidate>
+        <div class="frow">
+          <label class="f"><span class="lbl">Name <span class="req">*</span></span>
+            <input type="text" name="name" required>
+            <span class="errmsg">Enter your name.</span></label>
+          <label class="f"><span class="lbl">Company <span class="req">*</span></span>
+            <input type="text" name="company" required>
+            <span class="errmsg">Enter your company or firm.</span></label>
+          <label class="f"><span class="lbl">Email <span class="req">*</span></span>
+            <input type="email" name="email" required>
+            <span class="errmsg">Enter a valid email.</span></label>
+          <label class="f"><span class="lbl">Phone <span class="req">*</span></span>
+            <input type="tel" name="phone" required>
+            <span class="errmsg">Enter a phone number.</span></label>
+        </div>
+        <div class="frow one">
+          <label class="f"><span class="lbl">Title / role</span>
+            <input type="text" name="title"></label>
+        </div>
+        <div class="frow one">
+          <label class="f"><span class="lbl">Message <span class="req">*</span></span>
+            <textarea name="message" rows="6" required></textarea>
+            <span class="errmsg">Tell us how we can help.</span></label>
+        </div>
+        <label class="newsopt">
+          <input type="checkbox" name="newsletter" value="yes">
+          <span>Send me Eagle Abstract's eNewsletter — occasional NY title and real-estate law updates. Unsubscribe anytime.</span>
+        </label>
+        <button type="submit" class="btn btn-primary">Send message</button>
+      </form>
+      <div class="sent infocard" id="sent" style="margin-top:0">
+        <div class="sent show" style="padding:60px 26px">
+          <h2 class="display">Message sent.</h2>
+          <p>Thanks — we'll get back to you by the next business day. If it's urgent, call <a href="tel:+16315498848" style="color:var(--crimson);font-weight:600">631.549.8848</a>.</p>
+        </div>
+      </div>
+    </div>
+
+    <aside class="infocard" aria-label="Office information">
+      <div class="band"><img src="/img/eagle-mark-white.png" alt=""></div>
+      <div class="rows">
+        <div class="inforow">
+          <div class="k">Phone</div>
+          <div class="v"><a href="tel:+16315498848">631.549.8848</a></div>
+          <div class="sub">Fax 631.549.8976</div>
+        </div>
+        <div class="inforow">
+          <div class="k">Email</div>
+          <div class="v"><a href="mailto:customerservice@eagleabstract.com">customerservice@eagleabstract.com</a></div>
+        </div>
+        <div class="inforow">
+          <div class="k">Hours</div>
+          <div class="v">Monday – Friday, 9 AM – 5 PM</div>
+        </div>
+        <div class="inforow">
+          <div class="k">Office</div>
+          <div class="v">[Street address — TBD]</div>
+          <div class="sub">Long Island, New York · Serving all 62 NY counties</div>
+        </div>
+        <div class="inforow">
+          <div class="k">Orders</div>
+          <div class="v"><a href="/order.html">Place a title order online →</a></div>
+          <div class="sub">Response by the next business day</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="legal" style="border-top:none;padding-top:0">
+      <span>© 2026 Eagle Abstract Corp. · Office 631.549.8848 · Fax 631.549.8976</span>
+      <span><a href="https://eagleabstract.com/privacy-policy/" style="color:#9C8F95">Privacy policy</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const form = document.getElementById('contactform');
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    let ok = true;
+    form.querySelectorAll('input[required],textarea[required]').forEach(el=>{
+      const bad = !el.value.trim() || (el.type==='email' && !/^\S+@\S+\.\S+$/.test(el.value));
+      el.classList.toggle('err', bad);
+      const msg = el.parentElement.querySelector('.errmsg');
+      if(msg) msg.classList.toggle('show', bad);
+      if(bad) ok = false;
+    });
+    if(!ok) return;
+    const btn = form.querySelector('button'); btn.disabled = true; btn.textContent = 'Sending…';
+    const data = {};
+    new FormData(form).forEach((v,k)=>data[k]=v);
+    try{
+      const r = await fetch('/api/contact', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+      const j = await r.json();
+      if(!j.ok) throw 0;
+      form.style.display = 'none';
+      document.getElementById('sent').style.display = 'block';
+    }catch(err){
+      btn.disabled = false; btn.textContent = 'Send message';
+      alert("We couldn't send your message. Please try again or call 631.549.8848.");
+    }
+  });
+})();
+</script>
+<script src="/js/nav.js"></script>
+</body>
+</html>

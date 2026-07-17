@@ -8,6 +8,7 @@
 <meta property="og:title" content="Eagle Abstract Corp. — New York Title Insurance Since 1979">
 <meta property="og:description" content="Full-service title agency for all 62 New York counties. Order titles online, calculate NY premiums, and access 100+ free legal forms.">
 <meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -43,12 +44,13 @@
     <a class="logo" href="/" aria-label="Eagle Abstract Corp. home">
       <img src="/img/eagle-logo_horiz_101217_98-05-39.png" alt="Eagle Abstract Corp.">
     </a>
-    <nav aria-label="Main">
+    <button class="navtoggle" aria-expanded="false" aria-label="Menu" aria-controls="mainnav"><span></span><span></span><span></span></button>
+    <nav id="mainnav" aria-label="Main">
       <a href="#services">Services</a>
       <a href="/about.html">About</a>
       <a href="/forms.html">Resources</a>
-      <a href="#fees">Recording Fees</a>
-      <a href="#contact">Contact</a>
+      <a href="/fees.html">Recording Fees</a>
+      <a href="/contact.html">Contact</a>
       <a class="btn btn-primary order-btn" href="/order.html">Order a Title</a>
     </nav>
   </div>
@@ -213,5 +215,6 @@
   </div>
 </footer>
 
+<script src="/js/nav.js"></script>
 </body>
 </html>
