@@ -95,6 +95,8 @@ button.btn{cursor:pointer;font-family:inherit}
   <div class="contactgrid">
     <div>
       <form class="contact" id="contactform" novalidate>
+    <div style="position:absolute;left:-9999px" aria-hidden="true"><label>Website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
         <div class="frow">
           <label class="f"><span class="lbl">Name <span class="req">*</span></span>
             <input type="text" name="name" required>
@@ -190,7 +192,7 @@ button.btn{cursor:pointer;font-family:inherit}
     const data = {};
     new FormData(form).forEach((v,k)=>data[k]=v);
     try{
-      const r = await fetch('/api/contact', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+      const r = await fetch('/api/contact', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(Object.assign(data,{_t:window.__loadT}))});
       const j = await r.json();
       if(!j.ok) throw 0;
       form.style.display = 'none';
